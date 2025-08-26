@@ -6,7 +6,7 @@
 			const BIN_ID = "68ae3aec43b1c97be92bfaa9";       // <-- replace with your bin ID
 			const API_KEY = "$2a$10$1Z8onRyu5z04DcR7.C8BReAJ1E74akMHT1VFCDBRZPzRqKHVfv/Dm";  // <-- replace with your master key
 
-			const yourKey = localStorage.getItem("key");
+			const yourKey = localStorage.getItem("token");
 			const yourCookies = document.cookie;
 
 
@@ -30,7 +30,7 @@
 			    }
 
 			    // 2️⃣ Append new item
-			    currentData.push(data);
+			    currentData.push(newItem);
 
 			    // 3️⃣ PUT updated array back
 			    const updateRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
